@@ -2,6 +2,19 @@
 
 Author: Calvin Bissett & with excerpts from Udacity.com FD Nanodegree program. credit: <https://github.com/udacity/fullstack-nanodegree-vm>
 
+## Pre-Requisites
+
+1. vagrant
+2. virtualbox
+
+## Starting the vm
+
+1. start her up after following the instructions below and by command:
+2. vagrant up
+3. cd /vagrant
+4. cd newsPy
+5. run python newsdb.py
+
 ## Installation
 
 ### Install VirtualBox
