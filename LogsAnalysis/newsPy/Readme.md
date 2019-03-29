@@ -226,10 +226,16 @@ run py, then run py program when @ newsPy sudirectory with command py newsdb.py,
 
 ## Views
 
+### Either
+
+run psql -d news -f create_views.sql
+
+### or
+
 *..Used to select the numerrors per day (logs Table) => http_errors_per_day view
 
-* select time::date as datelog, count(*) as numerrors from log where left(log.status,3)::integer > 400 group by datelog order by numerrors desc;
+* create view http_errors_per_day select time::date as datelog, count(*) as numerrors from log where left(log.status,3)::integer > 400 group by datelog order by numerrors desc;
 
 *.. Used to select the numhttprequests per day (logs Table) => http_requests_per_day view
 
-* select time::date as datelog, count(*) as numhttprequests from log group by datelog order by numhttprequests desc;
+* create view http_requests_per_day select time::date as datelog, count(*) as numhttprequests from log group by datelog order by numhttprequests desc;

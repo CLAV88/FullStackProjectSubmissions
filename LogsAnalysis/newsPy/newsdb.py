@@ -17,13 +17,13 @@ def get_topArticles():
         (select split_part(log.path,'/',3)\
         as top_three_articles, count (*)::int as views\
         from log group by log.path \
-        order by views desc Limit 3 offset 1) as a inner join \
+        order by views desc Limit 3) as a inner join \
         articles as art on art.slug = top_three_articles order by views desc;"
         c.execute(get_SQL)
         db.close
         return c.fetchall()
-    except:
-        print("Shit son, local db connection, or like failed, like wtf?")
+    except psycopg2.Error as e:
+        print(e.pgerror)
 
 # Who are the most popular article authors of all time?
 
@@ -36,15 +36,15 @@ def get_topAuthors():
           (select art.author as authorid, sum(views)::int as author_count from\
           (select split_part(log.path,'/',3) as top_three_articles,\
           count (*) as views\
-          from log group by log.path order by views desc offset 1) \
+          from log group by log.path order by views desc) \
           as a inner join articles as art on art.slug = top_three_articles\
           group by art.author order by author_count desc) as a inner join\
           authors as aut on authorid =  aut.id;"
         c.execute(get_SQL)
         db.close
         return c.fetchall()
-    except:
-        print("Shit son, local db connection, or like failed, like wtf?")
+    except psycopg2.Error as e:
+        print(e.pgerror)
 
 # On which days did more than 1% of requests lead to errors?
 
@@ -69,8 +69,8 @@ def get_topBugs():
         c.execute(get_SQL)
         db.close
         return c.fetchall()
-    except:
-        print("Shit son, local db connection, or like failed, like wtf?")
+    except psycopg2.Error as e:
+        print(e.pgerror)
 
 # Variables
 
@@ -91,8 +91,7 @@ def _main():
     print('\n')
     print("Days where site experienced >1% errors in server requests. \n")
     for bug in bugs:
-        print(bug[0].strftime("%b %d %Y") + ", approximately\
-        " + str(round(bug[1], 2)) + " % of requests failed")
+        print(bug[0].strftime("%b %d %Y") + " " + str(round(bug[1], 2)) + "%")
 
 
 _main()
